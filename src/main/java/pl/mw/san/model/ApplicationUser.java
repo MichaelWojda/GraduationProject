@@ -20,13 +20,15 @@ public class ApplicationUser {
     @NotNull
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_and_roles",joinColumns = {@JoinColumn(name="user_id",referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name="role_id",referencedColumnName = "id")})
     private Set<UserRole> userRoles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "applicationUser")
-    private List<Item> itemList = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="basket_id")
+    private Basket basket;
 
     public ApplicationUser() {
     }
@@ -68,12 +70,12 @@ public class ApplicationUser {
         this.userRoles = userRoles;
     }
 
-    public List<Item> getItemList() {
-        return itemList;
+    public Basket getBasket() {
+        return basket;
     }
 
-    public void setItemList(List<Item> itemList) {
-        this.itemList = itemList;
+    public void setBasket(Basket basket) {
+        this.basket = basket;
     }
 
     @Override
@@ -83,7 +85,6 @@ public class ApplicationUser {
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", userRoles=" + userRoles +
-                ", itemList=" + itemList +
                 '}';
     }
 }

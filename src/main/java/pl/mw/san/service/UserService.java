@@ -1,6 +1,8 @@
 package pl.mw.san.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.mw.san.model.ApplicationUser;
@@ -20,13 +22,6 @@ public class UserService {
 
     private UserRoleRepository userRoleRepository;
 
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -44,8 +39,10 @@ public class UserService {
 
     public Function<ApplicationUser,ApplicationUser> createUserFunction = applicationUser -> {
         applicationUser.getUserRoles().add(userRoleRepository.getUserRoleByRoleName(BASICROLE));
-        applicationUser.setPassword(passwordEncoder.encode(applicationUser.getPassword()));
         return userRepository.save(applicationUser);
     };
+
+
+
 
 }

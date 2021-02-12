@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.mw.san.model.ApplicationUser;
+import pl.mw.san.model.UserBasicData;
 import pl.mw.san.repositories.UserRepository;
+import pl.mw.san.security.LoggedUser;
+import pl.mw.san.security.UserPrincipal;
 import pl.mw.san.service.UserService;
 
 import java.net.URI;
@@ -29,6 +33,7 @@ public class UserRestController {
 
 
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<ApplicationUser> getAll() {
         return userRepository.findAll();
 
@@ -39,6 +44,16 @@ public class UserRestController {
         return userRepository.findById(id).map(user -> ResponseEntity.ok().body(user)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
+
+    @GetMapping("/user/current")
+    @PreAuthorize("hasAnyAuthority('BASIC','ADMIN')")
+    public UserBasicData getCurrentUserBasicData(@LoggedUser UserPrincipal userPrincipal){
+        if(userPrincipal!=null){
+
+        }
+        return new UserBasicData(userPrincipal.getId(),userPrincipal.getUsername(),userPrincipal.getAuthorities().toString());
+    }
+
 
     @PostMapping(value = "/user/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApplicationUser> createUser(@RequestBody ApplicationUser appUser) throws URISyntaxException {
