@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 import pl.mw.san.model.Item;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.function.*;
 

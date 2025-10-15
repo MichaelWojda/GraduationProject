@@ -1,6 +1,6 @@
 package pl.mw.san.security.payload;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
 
