@@ -27,7 +27,7 @@ import pl.mw.san.security.payload.JWTTokenResponse;
 import pl.mw.san.security.payload.LoginRequest;
 import pl.mw.san.security.payload.SignUpRequest;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
